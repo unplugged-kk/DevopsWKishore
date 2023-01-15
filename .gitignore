@@ -38,4 +38,4 @@ terraform.rc
 
 #ignoring pem files
 
-*.pem
+# *.pem
