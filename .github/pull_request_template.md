@@ -1,4 +1,4 @@
-All applicable fields must be completed correctly (**CANNOT LEAVE BLANK**) or the PR will not be approved. The PR will also need to be peer reviewed before merged.
+<!-- All applicable fields must be completed correctly (**CANNOT LEAVE BLANK**) or the PR will not be approved. The PR will also need to be peer reviewed before merged. -->
 
 
 
@@ -6,7 +6,7 @@ All applicable fields must be completed correctly (**CANNOT LEAVE BLANK**) or th
 *Provide a summary of the role specific code changes that are being deployed.*
 
 
-
+<!-- 
 ## 2. Primary Point of Contact EMAIL for this PR:
 
 
@@ -33,4 +33,4 @@ b) Blast Radius:
 - [ ] Yes
 - [ ] No **PROVIDE ROLLBACK/REMEDIATION PLAN BELOW**
 
-**Rollback/Remediation Plan:**
+**Rollback/Remediation Plan:** -->
