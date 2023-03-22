@@ -1,7 +1,7 @@
 # DNS Registration 
 resource "aws_route53_record" "apps_dns" {
   zone_id = data.aws_route53_zone.mydomain.zone_id
-  name    = "myapps101.devopswithkishore.tech"
+  name    = "myapps101.kishorekumar.online"
   type    = "A"
   alias {
     name                   = module.alb.lb_dns_name
@@ -38,7 +38,7 @@ resource "aws_route53_record" "apps_dns" {
 ## Testing Host Header - Redirect to External Site from ALB HTTPS Listener Rules
 resource "aws_route53_record" "app1_dns" {
   zone_id = data.aws_route53_zone.mydomain.zone_id
-  name    = "terraform-aks101.devopswithkishore.tech"
+  name    = "terraform-aks101.kishorekumar.online"
   type    = "A"
   alias {
     name                   = module.alb.lb_dns_name
