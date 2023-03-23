@@ -7,7 +7,7 @@ description: Create a DNS to DB Demo test on AWS with Route53, ALB, EC2 and RDS 
 ## Pre-requisites
 - Copy `terraform-manifests` from `TF_PROJECT_V10_ALB-Path-Based-Routing`
 - You need a Registered Domain in AWS Route53 to implement this usecase
-- Copy your `terraform-key.pem` file to `terraform-manifests/private-key` folder
+- Copy your `terraform-key.pem` file to `manifests/private-key` folder
 
 ## Introduction
 ### Update Terraform Module Versions
