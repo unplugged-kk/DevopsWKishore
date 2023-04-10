@@ -77,7 +77,7 @@ Jenkins Installation is Successful. You can now starting using the Jenkins
    - Select the plugin and click the Install button.
    - Restart Jenkins after the plugin is installed.
    
-![Docker Plugin Jenkins](../../CICD/Jenkins/CICD/Jenkins/images/misc/jenkins6.png)
+![Docker Plugin ](../../CICD/Jenkins/images/misc/jenkins6.png)
 
 Wait for the Jenkins to be restarted.
 
