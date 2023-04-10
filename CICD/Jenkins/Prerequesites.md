@@ -1,9 +1,9 @@
 # Jenkins-CICD
 
-![Arch Diagram ](../../images/misc/High_level_Arch.png)
+![Arch Diagram ](../images/misc/High_level_Arch.png)
 
 ## Installation on Azure Instance
-![CICD Instance On Azure](../../images/misc/Azure_Jenkins.png)
+![CICD Instance On Azure](../images/misc/Azure_Jenkins.png)
 
 ### Install Jenkins.
 
@@ -41,7 +41,7 @@ sudo apt-get install jenkins
 
 - Add inbound traffic rules as shown in the image (you can just allow TCP 8080).
 
-![SG Azure VM](../../images/misc/SG.png)
+![SG Azure VM](../images/misc/SG.png)
 
 
 ### Login to Jenkins using the below URL:
@@ -52,22 +52,22 @@ After you login to Jenkins,
       - Run the command to copy the Jenkins Admin Password - `sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
       - Enter the Administrator password
       
-![Unlock Jenkins ](../../images/misc/jenkins1.png)
+![Unlock Jenkins ](../images/misc/jenkins1.png)
 
 ### Click on Install suggested plugins
 
-![Customize Jenkins ](../../images/misc/jenkins2.png)
+![Customize Jenkins ](../images/misc/jenkins2.png)
 
 Wait for the Jenkins to Install suggested plugins
 
-![Installing Plugin on Jenkins](../../images/misc/jenkins3.png)
+![Installing Plugin on Jenkins](../images/misc/jenkins3.png)
 
 Create First Admin User or Skip the step [If you want to use this Jenkins instance for future use-cases as well, better to create admin user]
 
-![Admin User Creation](../../images/misc/jenkins4.png)
+![Admin User Creation](../images/misc/jenkins4.png)
 Jenkins Installation is Successful. You can now starting using the Jenkins 
 
-![Final Installation ](../../images/misc/jenkins5.png)
+![Final Installation ](../images/misc/jenkins5.png)
 
 ## Install the Docker Pipeline plugin in Jenkins:
 
