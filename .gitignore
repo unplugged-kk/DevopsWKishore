@@ -39,3 +39,6 @@ terraform.rc
 #ignoring pem files
 
 # *.pem
+
+*.DS_Store*
+.vscode/*
