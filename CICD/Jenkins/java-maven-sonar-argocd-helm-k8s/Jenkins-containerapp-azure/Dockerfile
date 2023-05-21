@@ -6,7 +6,7 @@ USER root
 
 # Install necessary packages and dependencies
 RUN apt-get update && \
-    apt-get install -y sudo
+    apt-get install -y sudo maven
 
 # Create Jenkins data directory as a Docker volume
 VOLUME /var/jenkins_home
