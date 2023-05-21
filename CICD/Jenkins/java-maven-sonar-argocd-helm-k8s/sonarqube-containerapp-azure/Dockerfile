@@ -1,29 +1,16 @@
-# Base image
-FROM openjdk:8-jre-alpine
+# Use the official SonarQube image as the base
+FROM sonarqube:8.9.2-community
 
-# Set the SonarQube version
-ARG SONARQUBE_VERSION=9.1.0.47736
+# Set the user
+USER sonarqube
 
-# Set the download URL for SonarQube
-ARG SONARQUBE_DOWNLOAD_URL=https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-${SONARQUBE_VERSION}.zip
+# Create data directory as a Docker volume
+VOLUME /opt/sonarqube/data
 
-# Install unzip and bash
-RUN apk add --no-cache unzip bash
-
-# Download and extract SonarQube
-RUN set -x \
-    && cd /opt \
-    && wget -O sonarqube.zip ${SONARQUBE_DOWNLOAD_URL} \
-    && unzip sonarqube.zip \
-    && mv sonarqube-${SONARQUBE_VERSION} sonarqube \
-    && rm sonarqube.zip*
-
-# Configure environment variables
-ENV SONAR_HOME=/opt/sonarqube \
-    PATH=$PATH:/opt/sonarqube/bin
-
-# Expose the default port for SonarQube
+# Expose the SonarQube port
 EXPOSE 9000
 
-# Start SonarQube
-CMD ["./bin/run.sh"]
+# Define the entry point script
+COPY entrypoint.sh /entrypoint.sh
+#RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]

@@ -5,39 +5,22 @@
 ## Installation on Azure Instance
 ![CICD Instance On Azure](../../CICD/Jenkins/images/misc/Azure_Jenkins.png)
 
-### Install Jenkins.
+## Docker  Intallalation
 
-Pre-Requisites:
- - Java (JDK)
-
-### Run the below commands to install Java and Jenkins
-
-Install Java
+Run the below command to Install Docker
 
 ```
 sudo apt update
-sudo apt install openjdk-11-jre
+sudo apt install docker.io
 ```
 
-Verify Java is Installed
+### Install Jenkins.
 
 ```
-java -version
+ docker run -d -p 8080:8080 -v jenkins_home:/var/jenkins_home --name jenkins-container unpluggedkk/jenkins-with-data:v1
 ```
 
-Now, you can proceed with installing Jenkins
-
-```
-curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | sudo tee \
-  /usr/share/keyrings/jenkins-keyring.asc > /dev/null
-echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
-  https://pkg.jenkins.io/debian binary/ | sudo tee \
-  /etc/apt/sources.list.d/jenkins.list > /dev/null
-sudo apt-get update
-sudo apt-get install jenkins
-```
-
-**Note: ** By default, Jenkins will not be accessible to the external world due to the inbound traffic restriction by AWS. Open port 8080 in the inbound traffic rules as show below.
+**Note: ** By default, Jenkins will not be accessible to the external world due to the inbound traffic restriction by Azure. Open port 8080 in the inbound traffic rules as show below.
 
 - Add inbound traffic rules as shown in the image (you can just allow TCP 8080).
 
@@ -162,17 +145,69 @@ Hurray !! Access the application on `http://<ip-address>:8010`
 ## Next Steps
 
 ### Configure a Sonar Server locally
+## For more details navigate to sonarqube-containerapp-azure dir
 
 ```
-apt install unzip
-adduser sonarqube
-wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.4.0.54424.zip
-unzip sonarqube-9.4.0.54424.zip
-chmod -R 755 /home/sonar/sonarqube-9.4.0.54424
-chown -R sonar:sonar /home/sonarqube/sonarqube-9.4.0.54424
-cd sonarqube-9.4.0.54424/bin/linux-x86-64/
-./sonar.sh start
+Dockerfile
+
+# Use the official SonarQube image as the base
+FROM sonarqube:8.9.2-community
+
+# Set the user
+USER sonarqube
+
+# Create data directory as a Docker volume
+VOLUME /opt/sonarqube/data
+
+# Expose the SonarQube port
+EXPOSE 9000
+
+# Define the entry point script
+COPY entrypoint.sh /entrypoint.sh
+#RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
+```
+
+## To build  and run the Docker image, use the following command:
+```
+docker build -t sonarqube-with-data .
+
+docker run -d -p 9000:9000 -v sonarqube_data:/opt/sonarqube/data --name sonar-container unpluggedkk/sonarqube-with-data:v1
+
 ```
 
 Hurray !! Now you can access the `SonarQube Server` on `http://<ip-address>:9000` 
 
+## ArgoCD installtion 
+
+we will use GKE to deploy agrocd. minikube also can be used this is step is done to check realworld scenario.
+
+```
+git clone https://github.com/unplugged-kk/managed-k8s
+
+cd  GKE/regional-cluster
+
+./create-cluster.sh to create gke cluster
+
+```
+
+To save cloud cost you can scaleup and down cluster based on the testing time
+
+use below script
+
+```
+GKE/scale_cluster.sh 
+```
+
+Installation and Configuration Steps
+
+```
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+
+```
+
+Login to argocd by `http://<LB-ip-address>:80` use admin as username and password from K8S secret.
