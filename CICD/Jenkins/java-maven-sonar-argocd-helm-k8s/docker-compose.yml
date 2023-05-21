@@ -2,7 +2,7 @@ version: '3'
 
 services:
   jenkins:
-    image: unpluggedkk/jenkins-with-data:v1
+    image: unpluggedkk/jenkins-with-data:v2 #v2 contains mvn
     ports:
       - 8080:8080
     volumes:
