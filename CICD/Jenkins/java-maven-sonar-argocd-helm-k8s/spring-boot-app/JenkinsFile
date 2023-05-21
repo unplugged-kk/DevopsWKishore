@@ -1,45 +1,25 @@
 pipeline {
-    agent {
-        node {
-            label 'docker-node'
-        }
-    }
+    agent any
+
     stages {
         stage('Checkout') {
-            agent {
-                docker {
-                    image 'unpluggedkk/maven-kishore-docker-agent:v1'
-                    args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-                }
-            }
             steps {
                 sh 'echo passed'
                 // git branch: 'main', url: 'https://github.com/unplugged-kk/DevopsWKishore.git'
             }
         }
+
         stage('Build and Test') {
-            agent {
-                docker {
-                    image 'unpluggedkk/maven-kishore-docker-agent:v1'
-                    args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-                }
-            }
             environment {
                 REGISTRY_CREDENTIALS = credentials('docker-cred')
             }
             steps {
                 sh 'ls -ltr'
-                // build the project and create a JAR file
                 sh 'cd CICD/Jenkins/java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean package'
             }
         }
+
         stage('Static Code Analysis') {
-            agent {
-                docker {
-                    image 'unpluggedkk/maven-kishore-docker-agent:v1'
-                    args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-                }
-            }
             environment {
                 SONAR_URL = "http://kishore-cicd.eastasia.cloudapp.azure.com:9000"
                 REGISTRY_CREDENTIALS = credentials('docker-cred')
@@ -50,13 +30,8 @@ pipeline {
                 }
             }
         }
+
         stage('Build and Push Docker Image') {
-            agent {
-                docker {
-                    image 'unpluggedkk/maven-kishore-docker-agent:v1'
-                    args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-                }
-            }
             environment {
                 DOCKER_IMAGE = "unpluggedkk/kishore-ultimate-cicd:${BUILD_NUMBER}"
                 // DOCKERFILE_LOCATION = "CICD/Jenkins/java-maven-sonar-argocd-helm-k8s/spring-boot-app/Dockerfile"
@@ -72,31 +47,26 @@ pipeline {
                 }
             }
         }
+
         stage('Update Deployment File') {
-            agent {
-                docker {
-                    image 'unpluggedkk/maven-kishore-docker-agent:v1'
-                    args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-                }
-            }
             environment {
                 GIT_REPO_NAME = "DevopsWKishore"
                 GIT_USER_NAME = "unplugged-kk"
                 REGISTRY_CREDENTIALS = credentials('docker-cred')
             }
             steps {
-            withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-                sh '''
-                    git config user.email "kishore.behera2010@gmail.com"
-                    git config user.name "Kishore Kumar Behera"
-                    BUILD_NUMBER=${BUILD_NUMBER}
-                    sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" CICD/Jenkins/java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
-                    git add CICD/Jenkins/java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
-                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
-                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
-                '''
+                withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+                    sh '''
+                        git config user.email "kishore.behera2010@gmail.com"
+                        git config user.name "Kishore Kumar Behera"
+                        BUILD_NUMBER=${BUILD_NUMBER}
+                        sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" CICD/Jenkins/java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
+                        git add CICD/Jenkins/java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
+                        git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                        git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                    '''
+                }
             }
         }
     }
-  }
 }
