@@ -24,6 +24,9 @@ pipeline {
                     args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
+            environment {
+                REGISTRY_CREDENTIALS = credentials('docker-cred')
+            }
             steps {
                 sh 'ls -ltr'
                 // build the project and create a JAR file
@@ -39,6 +42,7 @@ pipeline {
             }
             environment {
                 SONAR_URL = "http://kishore-cicd.eastasia.cloudapp.azure.com:9000"
+                REGISTRY_CREDENTIALS = credentials('docker-cred')
             }
             steps {
                 withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
@@ -78,6 +82,7 @@ pipeline {
             environment {
                 GIT_REPO_NAME = "DevopsWKishore"
                 GIT_USER_NAME = "unplugged-kk"
+                REGISTRY_CREDENTIALS = credentials('docker-cred')
             }
             steps {
             withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
