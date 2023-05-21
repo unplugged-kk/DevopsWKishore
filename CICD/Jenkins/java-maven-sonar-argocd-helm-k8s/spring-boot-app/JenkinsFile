@@ -1,8 +1,7 @@
 pipeline {
     agent {
-        node('docker-node') {
+        node {
             label 'docker-node'
-            customWorkspace '/home/kishore/jenkins'
         }
     }
     stages {
