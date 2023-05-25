@@ -17,7 +17,7 @@ sudo apt install docker.io
 ### Install Jenkins.
 
 ```
- docker run -d -p 8080:8080 -v jenkins_home:/var/jenkins_home --name jenkins-container unpluggedkk/jenkins-with-data:v1
+ docker run -d -p 8080:8080 -v jenkins_home:/var/jenkins_home --name jenkins-container unpluggedkk/jenkins-with-data:v3
 ```
 
 **Note: ** By default, Jenkins will not be accessible to the external world due to the inbound traffic restriction by Azure. Open port 8080 in the inbound traffic rules as show below.

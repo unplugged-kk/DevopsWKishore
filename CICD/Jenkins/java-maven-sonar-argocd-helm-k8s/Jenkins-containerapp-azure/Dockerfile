@@ -6,7 +6,10 @@ USER root
 
 # Install necessary packages and dependencies
 RUN apt-get update && \
-    apt-get install -y sudo maven
+    apt-get install -y sudo maven docker.io
+
+# Add the Jenkins user to the docker group
+RUN usermod -aG docker jenkins
 
 # Create Jenkins data directory as a Docker volume
 VOLUME /var/jenkins_home
@@ -29,3 +32,4 @@ EXPOSE 8080
 
 # Start Jenkins
 CMD ["/usr/local/bin/jenkins.sh"]
+
